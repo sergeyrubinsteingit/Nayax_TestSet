@@ -1,0 +1,10 @@
+
+------------------------------------------------------------------------------
+   TEST REPORT at 15/06/2024 20:26:30
+------------------------------------------------------------------------------
+
+
+Cookie bar test passed.
+Agreement window test passed.
+User Agreement text test failed.
+Notification test passed.
