@@ -57,7 +57,7 @@ namespace Nayax_TestSet.GloballyUsedClasses
         public static IWebElement ElementExistsByXpath(string ElementXpath, int WaitingSpan)
         {
             // forced pause
-            System.Threading.Thread.Sleep(Convert.ToInt32(BandwidthCheck.DownloadRate * 1));
+            Thread.Sleep(Convert.ToInt32(BandwidthCheck.DownloadRate * 1));
 
             FluentWait.Timeout = TimeSpan.FromSeconds(WaitingSpan);
 
@@ -65,21 +65,44 @@ namespace Nayax_TestSet.GloballyUsedClasses
 
             FluentWait.IgnoreExceptionTypes(typeof(NoSuchElementException));
 
-            FluentWait.IgnoreExceptionTypes(typeof(OpenQA.Selenium.WebDriverException));
+            FluentWait.IgnoreExceptionTypes(typeof(WebDriverException));
 
             // time counter, milliseconds
             var StopWatch = new Stopwatch();
 
             StopWatch.Start();
 
-            ExpectedElement = FluentWait.Until(driver => TestProcedure.webDriver.FindElement(By.XPath(ElementXpath)));
+                try
+                {
+                    ExpectedElement = FluentWait.Until(driver => TestProcedure.webDriver.FindElement(By.XPath(ElementXpath)));
+                }
+                catch (NoSuchElementException)
+                {
+
+                    Environment.Exit(-1);
+
+                    TestProcedure.webDriver.Quit();
+
+                    Console.WriteLine("Failed to find an element by selector " + ElementXpath);
+
+                    return null;
+
+                }//try
 
             StopWatch.Stop();
 
             Console.WriteLine("Waiting for element by Xpath: " + ElementXpath + ", time elapsed: " + StopWatch.ElapsedMilliseconds + " milliseconds.");
 
             // console info
-            System.Console.WriteLine("ElementExistsByXpath > ExpectedElement: " + ElementXpath);
+            if (ExpectedElement.Text.Length > 0) {
+
+                Console.WriteLine("ElementExistsByXpath: ExpectedElement text is \"" + ExpectedElement.Text + "\"");
+
+            } else {
+
+                Console.WriteLine("ElementExistsByXpath: ExpectedElement is \"" + ExpectedElement.GetType() + "\"");
+
+            }//if
 
             // element dimensions
             //System.Threading.Thread.Sleep(Convert.ToInt32(BandwidthCheck.DownloadRate * 1));

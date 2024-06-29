@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Bibliography;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using System;
 using System.Collections.Generic;
@@ -15,7 +14,7 @@ namespace Nayax_TestSet.TestRelatedClasses
 
         public static Actions Actions_ = new Actions(TestProcedure.webDriver);
 
-        public static double TotalSumAsDouble = 0.0;
+        public static double TotalSumAsDouble = 10.0;
 
         // clicks on Dashboard tab
         public static void OpenDashboardTab()
@@ -23,7 +22,7 @@ namespace Nayax_TestSet.TestRelatedClasses
 
             Console.WriteLine("\n<<<<<<<<<<<<<<< Open Dashboard Tab begins >>>>>>>>>>>>>>>>>>>");
 
-            RunTask = Task.Run(() => 
+            RunTask = Task.Run(() =>
             {
                 try
                 {
@@ -51,176 +50,162 @@ namespace Nayax_TestSet.TestRelatedClasses
 
 
         // gets a data from Last 12 months vs previous 12 months Sales chart
-        public static double Last12MonthsVsPrevious12MonthTotal() {
+        public static double Last12MonthsVsPrevious12MonthTotal()
+        {
 
             Console.WriteLine("\n<<<<<<<<<<<<<<< Last 12 Months Vs Previous 12 Month Total begins >>>>>>>>>>>>>>>>>>>");
 
-            // two types of currency to search by
-            string[] currencyType = { "//span[contains(text(), 'USD')]", "//span[contains(text(),'ILS')]" };
+            // these are numbers of pixel for Move By Offset action, Y-axe, to reach a necessary entry in the dropdown: US, IL
+            int[] currencyType = { 50, 30 };
 
-            //temp ///////////////////////////////////((IJavaScriptExecutor)TestProcedure.webDriver).ExecuteScript("arguments[0].click();", TestProcedure.webDriver.FindElement(By.XPath(currency_)));
+            // opens Dashboard tab
+            RunTask = Task.Run(() =>
+            {
 
-            foreach (string currency_ in currencyType) {
+                OpenDashboardTab();
 
+            });
+            RunTask.Wait();
+
+            //foreach (string currency_ in currencyType)
+            foreach (int currency_ in currencyType)
+            {
                 try
                 {
-                    // opens Dashboard tab
-                    RunTask = Task.Run(() =>
-                    {
-
-                        OpenDashboardTab();
-
-                    });
-                    RunTask.Wait();
-
-                    //// forced pause
-                    System.Threading.Thread.Sleep(Convert.ToInt32(GloballyUsedClasses.BandwidthCheck.DownloadRate * (int)GloballyUsedClasses.BandwidthCheck.Coefficient_)); 
-
-                    // For some reason it is impossible to select more than one option from this dropdown.
-                    // So the "if" block selects the option "USD" which is not shown by default.
-                    // Then the "refresh" restores the default option "ILS" and data is filtered by it.
-                    if (currency_ == currencyType[0]) {
-
-                        // searches for a Currency toggle on the top-right
-                        RunTask = Task.Run(() =>
-                        {
-
-                            GloballyUsedClasses.WaitTillExpectedCondition.ElementExistsByCssSelector(
-                                GloballyUsedClasses.TestData.TestKeyValues[GloballyUsedClasses.TestData.KeyWords.CURRENCY_THUMBNAIL],
-                                GloballyUsedClasses.BandwidthCheck.DownloadRate * (int)GloballyUsedClasses.BandwidthCheck.Coefficient_);
-
-                        });
-                        RunTask.Wait();
-
-                        // moves and clicks on to the Currency toggle
-                        Actions_.MoveToElement(GloballyUsedClasses.WaitTillExpectedCondition.ExpectedElement).Click().Perform();
-
-                        // forced pause
-                        System.Threading.Thread.Sleep(Convert.ToInt32(GloballyUsedClasses.BandwidthCheck.DownloadRate * 100));
-
-                        Console.WriteLine("\nCurrency Xpath is: " + currency_ + "\n");
-
-                        RunTask = Task.Run(() =>
-                        {
-                            // searches for a Currency type in the dropdown
-                            GloballyUsedClasses.WaitTillExpectedCondition.ElementExistsByXpath(currency_,
-                                GloballyUsedClasses.BandwidthCheck.DownloadRate * (int)GloballyUsedClasses.BandwidthCheck.Coefficient_);
-
-                        });
-                        RunTask.Wait();
-
-                        Actions_.MoveToElement(GloballyUsedClasses.WaitTillExpectedCondition.ExpectedElement).Click().Perform();
-
-
-                    }//if
-
-                    // forced pause
-                    System.Threading.Thread.Sleep(Convert.ToInt32(GloballyUsedClasses.BandwidthCheck.DownloadRate));
-
-                    Console.WriteLine("\nSearch for a column in chart.\n");
-
-                    RunTask = Task.Run(() =>
-                    {
-                        // searches for a column in chart
-                        GloballyUsedClasses.WaitTillExpectedCondition.ElementExistsByCssSelector(
-                        GloballyUsedClasses.TestData.TestKeyValues[GloballyUsedClasses.TestData.KeyWords.CHART_12VS12],
-                        GloballyUsedClasses.BandwidthCheck.DownloadRate * (int)GloballyUsedClasses.BandwidthCheck.Coefficient_);
-
-                    });
-                    RunTask.Wait();
-
-                    // moves to the column
-                    Actions_.MoveToElement(GloballyUsedClasses.WaitTillExpectedCondition.ExpectedElement).Perform();
-
-                    // forced pause
-                    System.Threading.Thread.Sleep(Convert.ToInt32(GloballyUsedClasses.BandwidthCheck.DownloadRate));
-
-                    // chart sub - element collection
-                    List<IWebElement> elemsInsideChart = GloballyUsedClasses.WaitTillExpectedCondition.ExpectedElement.FindElements(By.XPath(".//*")).ToList();
-
-                    // to store a web element designating a month
-                    List<IWebElement> MonthElementToFind = new List<IWebElement>();
-
-                    // forced pause
-                    System.Threading.Thread.Sleep(Convert.ToInt32(GloballyUsedClasses.BandwidthCheck.DownloadRate));
-
-                    string ElementText = "t";
-
-                    foreach (IWebElement el_ in elemsInsideChart) {
-
-                        if (TryClick(el_)) {
-
-                            ElementText = el_.Text;
-
-                            if (ElementText.Length > 0) {
-
-                                ElementText = el_.Text;
-
-                                Console.WriteLine("Chart's element: " + el_.ToString() + " : " + ElementText);
-
-                            } else {
-
-                                ElementText = "No Text";
-
-                            }//if
-
-                            if (ElementText == "May") {
-
-                                MonthElementToFind.Add(el_);
-
-                            }//if
-
-                        }//if
-
-                    }//foreach
-
-                    Console.WriteLine("May Element length: " + MonthElementToFind.Count);
-
-                    Console.WriteLine("Selected element: " + MonthElementToFind[0].Text);
-
-                    // Tooltips collection ////
-                    try
-                    {
-                        // forced pause
-                        System.Threading.Thread.Sleep(Convert.ToInt32(GloballyUsedClasses.BandwidthCheck.DownloadRate) * (int)GloballyUsedClasses.BandwidthCheck.Coefficient_);
-
-                        List<IWebElement> TooltipsElements = TestProcedure.webDriver.FindElements(By.TagName("text")).ToList();
-
-                        // forced pause
-                        System.Threading.Thread.Sleep(Convert.ToInt32(GloballyUsedClasses.BandwidthCheck.DownloadRate * (int)GloballyUsedClasses.BandwidthCheck.Coefficient_));
-
-                        Console.WriteLine("TooltipsElements number of items: " + TooltipsElements.Count);
-
-                        RunTask = Task.Run(() =>
-                        {
-                            // Search for the "May" column in chart
-                            SearchContextForToolTipElementInChart(TooltipsElements);
-
-                        });
-                        RunTask.Wait();
-
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("Tooltip Problems");
-                        throw;
-                    }
-                }
-                catch (NoSuchElementException e)
-                {
-                    Console.WriteLine("Failed to find \"Last 12 months vs previous 12 months Sales chart\". Finita!");
-                    Debug.WriteLine(e.ToString());
-                    TestProcedure.webDriver.Quit();
-                    return 0;
-                }
-
-                //refreshes
-                TestProcedure.webDriver.Navigate().Refresh();
 
                 //// forced pause
                 System.Threading.Thread.Sleep(Convert.ToInt32(GloballyUsedClasses.BandwidthCheck.DownloadRate * (int)GloballyUsedClasses.BandwidthCheck.Coefficient_));
 
-            }// foreach
+                // searches for a Currency toggle on the top-right
+                RunTask = Task.Run(() =>
+                {
+
+                    GloballyUsedClasses.WaitTillExpectedCondition.ElementExistsByCssSelector(
+                        GloballyUsedClasses.TestData.TestKeyValues[GloballyUsedClasses.TestData.KeyWords.CURRENCY_THUMBNAIL],
+                        GloballyUsedClasses.BandwidthCheck.DownloadRate * (int)GloballyUsedClasses.BandwidthCheck.Coefficient_);
+
+                });
+                RunTask.Wait();
+
+                // moves and clicks on to the Currency toggle
+                Actions_.MoveToElement(GloballyUsedClasses.WaitTillExpectedCondition.ExpectedElement).Click().Perform();
+
+                // forced pause
+                System.Threading.Thread.Sleep(Convert.ToInt32(GloballyUsedClasses.BandwidthCheck.DownloadRate * 100));
+
+                // moves to the currency entry
+                Actions_.MoveByOffset(10, currency_).Click().Perform();
+
+                // forced pause
+                System.Threading.Thread.Sleep(Convert.ToInt32(GloballyUsedClasses.BandwidthCheck.DownloadRate));
+
+                Console.WriteLine("\nSearch for a column in chart.\n");
+
+                RunTask = Task.Run(() =>
+                {
+                    // searches for a column in chart
+                    GloballyUsedClasses.WaitTillExpectedCondition.ElementExistsByCssSelector(
+                    GloballyUsedClasses.TestData.TestKeyValues[GloballyUsedClasses.TestData.KeyWords.CHART_12VS12],
+                    GloballyUsedClasses.BandwidthCheck.DownloadRate * (int)GloballyUsedClasses.BandwidthCheck.Coefficient_);
+
+                });
+                RunTask.Wait();
+
+                // moves to the column
+                Actions_.MoveToElement(GloballyUsedClasses.WaitTillExpectedCondition.ExpectedElement).Perform();
+
+                // forced pause
+                System.Threading.Thread.Sleep(Convert.ToInt32(GloballyUsedClasses.BandwidthCheck.DownloadRate));
+
+                // chart sub - element collection
+                List<IWebElement> elemsInsideChart = GloballyUsedClasses.WaitTillExpectedCondition.ExpectedElement.FindElements(By.XPath(".//*")).ToList();
+
+                // to store a web element designating a month
+                List<IWebElement> MonthElementToFind = new List<IWebElement>();
+
+                // forced pause
+                System.Threading.Thread.Sleep(Convert.ToInt32(GloballyUsedClasses.BandwidthCheck.DownloadRate));
+
+                string ElementText = "t";
+
+                foreach (IWebElement el_ in elemsInsideChart)
+                {
+
+                    if (TryClick(el_))
+                    {
+
+                        ElementText = el_.Text;
+
+                        if (ElementText.Length > 0)
+                        {
+
+                            ElementText = el_.Text;
+
+                            Console.WriteLine("Chart's element: " + el_.ToString() + " : " + ElementText);
+
+                        }
+                        else
+                        {
+
+                            ElementText = "No Text";
+
+                        }//if
+
+                        if (ElementText == "May")
+                        {
+
+                            MonthElementToFind.Add(el_);
+
+                        }//if
+
+                    }//if
+
+                }//foreach
+
+                Console.WriteLine("May Element length: " + MonthElementToFind.Count);
+
+                Console.WriteLine("Selected element: " + MonthElementToFind[0].Text);
+
+                // Tooltips collection ////
+                try
+                {
+                    // forced pause
+                    System.Threading.Thread.Sleep(Convert.ToInt32(GloballyUsedClasses.BandwidthCheck.DownloadRate) * (int)GloballyUsedClasses.BandwidthCheck.Coefficient_);
+
+                    List<IWebElement> TooltipsElements = TestProcedure.webDriver.FindElements(By.TagName("text")).ToList();
+
+                    // forced pause
+                    System.Threading.Thread.Sleep(Convert.ToInt32(GloballyUsedClasses.BandwidthCheck.DownloadRate * (int)GloballyUsedClasses.BandwidthCheck.Coefficient_));
+
+                    Console.WriteLine("TooltipsElements number of items: " + TooltipsElements.Count);
+
+                    RunTask = Task.Run(() =>
+                    {
+                        // Search for the "May" column in chart
+                        SearchContextForToolTipElementInChart(TooltipsElements);
+
+                    });
+                    RunTask.Wait();
+
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Tooltip Problems");
+                    throw;
+                }
+            }
+            catch (NoSuchElementException e)
+            {
+                Console.WriteLine("Failed to find \"Last 12 months vs previous 12 months Sales chart\". Finita!");
+                Debug.WriteLine(e.ToString());
+                TestProcedure.webDriver.Quit();
+                return 0;
+            }// try
+
+            //// forced pause
+            System.Threading.Thread.Sleep(Convert.ToInt32(GloballyUsedClasses.BandwidthCheck.DownloadRate * (int)GloballyUsedClasses.BandwidthCheck.Coefficient_));
+
+        }// foreach
 
 
             Console.WriteLine("\n\n<<<<< TotalSumAsDouble = " + TotalSumAsDouble + " >>>>>\n\n");
@@ -340,7 +325,8 @@ namespace Nayax_TestSet.TestRelatedClasses
 
 
 
-        public static double ExtractTotalValue(string TooltipText_) {
+        public static double ExtractTotalValue(string TooltipText_)
+        {
 
             Console.WriteLine("\n<<<<< ExtractTotalValue begins >>>>>\n");
 
@@ -356,7 +342,8 @@ namespace Nayax_TestSet.TestRelatedClasses
                 // to collect only the chars related to the sum value
                 List<string> theSum = new List<string>();
 
-                for (int i = TextToChar.IndexOf(' ') + 2; i < TextToChar.Count; i++) {
+                for (int i = TextToChar.IndexOf(' ') + 2; i < TextToChar.Count; i++)
+                {
 
                     theSum.Add(TextToChar[i].ToString());
 

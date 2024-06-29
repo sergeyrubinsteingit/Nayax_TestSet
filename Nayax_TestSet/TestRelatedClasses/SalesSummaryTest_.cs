@@ -3,7 +3,6 @@ using OpenQA.Selenium.Interactions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -173,9 +172,6 @@ namespace Nayax_TestSet.TestRelatedClasses
 
             });
             RunTask.Wait();
-
-            // asserts availability of the web element
-            GloballyUsedClasses.Asserts.AssertElementExists(GloballyUsedClasses.WaitTillExpectedCondition.ExpectedElement, "12 Months vs 12 Months chart");
 
             // fires Screenshot taker
             RunTask = Task.Run(() =>

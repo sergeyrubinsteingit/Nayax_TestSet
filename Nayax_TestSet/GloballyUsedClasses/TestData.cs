@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace Nayax_TestSet.GloballyUsedClasses
 {
@@ -17,7 +18,7 @@ namespace Nayax_TestSet.GloballyUsedClasses
         [Flags]
         public enum KeyWords
             {
-                HOST_QA, URL_QA, URL_PROD, URL_MACHINES, URL_SALES_SUMMARY, ACTOR_QA, ACTOR_PROD, USER_MAIL, USER_MAIL_INPUT, USER_PASS_INPUT, PASS_QA, PASS_PROD, SETUP_MFA_BUTTON,
+                HOST_QA, URL_QA, URL_PROD, URL_MACHINES, URL_SALES_SUMMARY, CORTEX_API_URL, ACTOR_QA, ACTOR_PROD, USER_MAIL, USER_MAIL_INPUT, USER_PASS_INPUT, PASS_QA, PASS_PROD, SETUP_MFA_BUTTON,
                 SMS_LOGIN_FIELD, MOMA_LOGIN_FIELD, SIGNIN_BUTTON, DONT_TRUST_BUTTON, COOKIE_BAR, COOKIE_CONFIRM_BUTTON, AGREEMENT_WIN, AGREEMENT_LIST,
                 AGREEMENT_BOX, AGREEMENT_BUTTON, NOTIF_SUCCESS, NOTIF_ERROR, FILTER_CONTAINER, MENU_THEME_ICON, ACTOR_FIELD, ACTOR_NAME_ENTRY, ACTOR_SEARCH_BUTTON, UNASSIGNED_AREA, TEST_MASHINE,
                 TAB_DASHBOARD, TAB_GENERAL, CHART_12VS12, TOOLTIP_12MONTH, ACTOR_FIELD_REPORTS, VIEW_REPORT_BUTTON, TIME_PERIOD_FIELD, TIME_LIST, DATE_RANGE_ENTRY, DATE_RANGE_START_FIELD,
@@ -33,6 +34,7 @@ namespace Nayax_TestSet.GloballyUsedClasses
                 {KeyWords.URL_PROD, "https://my.nayax.com/core/LoginPage.aspx"},
                 {KeyWords.URL_MACHINES, "https://qa.nayax.com/core/public/facade.aspx?model=operations/machine"},
                 {KeyWords.URL_SALES_SUMMARY, "https://qa.nayax.com/core/public/facade.aspx?model=reports/SalesSummary"},
+                {KeyWords.CORTEX_API_URL, "https://qa-cortex.nayax.com/users/v1/signin"},
                 {KeyWords.ACTOR_QA, "sergey_EatDrinkSleepDie57"},
                 {KeyWords.ACTOR_PROD, "rubiserg_BuDrR1eluoT"},
                 {KeyWords.USER_MAIL, "sergeyr"},

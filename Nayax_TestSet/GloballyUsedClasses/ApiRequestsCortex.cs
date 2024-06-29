@@ -9,8 +9,8 @@ namespace Nayax_TestSet.GloballyUsedClasses
     class ApiRequestsCortex
     {
 
-        public static string SignIn_ = "{\"username\": \"sergeyr\",\"password\": \"" + GloballyUsedClasses.TestData.TestKeyValues[GloballyUsedClasses.TestData.KeyWords.PASS_QA] + "\"}";
-        public static string SignInEndpoint_ = "https://qa2-cortex.nayax.com/users/v1/signin";
+        public static string SignIn_ = "{\"username\": \"sergeyr\",\"password\": \"" + TestData.TestKeyValues[TestData.KeyWords.PASS_QA] + "\"}";
+        public static string SignInEndpoint_ = TestData.TestKeyValues[TestData.KeyWords.CORTEX_API_URL];
 
         public static string Ereceipt_ =
             "{"
