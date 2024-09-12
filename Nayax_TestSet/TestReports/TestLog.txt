@@ -1,6 +1,6 @@
 
 ------------------------------------------------------------------------------
-   TEST REPORT at 29/06/2024 15:28:10
+   TEST REPORT at 11/09/2024 10:41:38
 ------------------------------------------------------------------------------
 
 
@@ -8,4 +8,4 @@ Cookie bar test passed.
 Agreement window test passed.
 User Agreement text test failed.
 Notification test passed.
-Chart 12 Months vs 12 Months test failed.
+Chart 12 Months vs 12 Months test passed.

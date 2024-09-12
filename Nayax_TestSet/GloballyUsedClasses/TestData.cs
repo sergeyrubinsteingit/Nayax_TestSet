@@ -38,7 +38,7 @@ namespace Nayax_TestSet.GloballyUsedClasses
                 {KeyWords.ACTOR_QA, "sergey_EatDrinkSleepDie57"},
                 {KeyWords.ACTOR_PROD, "rubiserg_BuDrR1eluoT"},
                 {KeyWords.USER_MAIL, "sergeyr"},
-                {KeyWords.PASS_QA, "rubi69nayaxqa-55*"},
+                {KeyWords.PASS_QA, "Rubi69nayaxqa-1*"},
                 {KeyWords.PASS_PROD, "rubi69production-3*"},
                 {KeyWords.USER_MAIL_INPUT, "input#txtUser"},
                 {KeyWords.USER_PASS_INPUT, "input#txtPassword"},
