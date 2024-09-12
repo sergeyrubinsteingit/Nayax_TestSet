@@ -14,7 +14,7 @@ namespace Nayax_TestSet.TestRelatedClasses
 
         public static Actions Actions_ = new Actions(TestProcedure.webDriver);
 
-        public static double TotalSumAsDouble = 10.0;
+        public static double TotalSumAsDouble = 0.0;
 
         // clicks on Dashboard tab
         public static void OpenDashboardTab()
@@ -55,8 +55,25 @@ namespace Nayax_TestSet.TestRelatedClasses
 
             Console.WriteLine("\n<<<<<<<<<<<<<<< Last 12 Months Vs Previous 12 Month Total begins >>>>>>>>>>>>>>>>>>>");
 
+            // to get display dimensions
+            RunTask = Task.Run(() => {
+
+                GloballyUsedClasses.ScreenResolution.GetDisplayBounds();
+            
+            });
+            RunTask.Wait();
+
             // these are numbers of pixel for Move By Offset action, Y-axe, to reach a necessary entry in the dropdown: US, IL
-            int[] currencyType = { 50, 30 };
+            // they're given as a percentage of screen height int[] currencyType = { 50, 30 };
+
+            int[] currencyType = {
+
+                (int)Math.Round(GloballyUsedClasses.ScreenResolution.DisplayDimensions[1] * 0.05),
+
+                (int)Math.Round(GloballyUsedClasses.ScreenResolution.DisplayDimensions[1] * 0.03)
+
+            };//currencyType
+
 
             // opens Dashboard tab
             RunTask = Task.Run(() =>
@@ -94,7 +111,7 @@ namespace Nayax_TestSet.TestRelatedClasses
                 System.Threading.Thread.Sleep(Convert.ToInt32(GloballyUsedClasses.BandwidthCheck.DownloadRate * 100));
 
                 // moves to the currency entry
-                Actions_.MoveByOffset(10, currency_).Click().Perform();
+                Actions_.MoveByOffset(0, currency_).Click().Perform();
 
                 // forced pause
                 System.Threading.Thread.Sleep(Convert.ToInt32(GloballyUsedClasses.BandwidthCheck.DownloadRate));

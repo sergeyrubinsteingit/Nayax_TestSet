@@ -110,6 +110,7 @@
   <ItemGroup>
     <Compile Include="GloballyUsedClasses\ApiRequestsCortex.cs" />
     <Compile Include="GloballyUsedClasses\BandwidthCheck.cs" />
+    <Compile Include="GloballyUsedClasses\ScreenResolution.cs" />
     <Compile Include="GloballyUsedClasses\GetElementDimensions.cs" />
     <Compile Include="GloballyUsedClasses\GoogleMessagesOTC.cs" />
     <Compile Include="GloballyUsedClasses\HtmlGenerator.cs" />
